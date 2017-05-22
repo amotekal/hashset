@@ -8,7 +8,7 @@ import (
 
 //Hashset implements the extendible hashing algorithm
 type Hashset struct {
-	depth int
+	depth uint32
 	pages []page
 }
 
@@ -35,6 +35,26 @@ func hash(key interface{}) (uint32, error) {
 	return h.Sum32(), nil
 }
 
-func (eh *Hashset) getPage(key int) {
+func (eh *Hashset) getPage(key interface{}) (page, error) {
+	var p page
+	h, err := hash(key)
+	if err != nil {
+		return p, err
+	}
+	p = eh.pages[h&((1<<eh.depth)-1)]
+	return p, err
+}
 
+//Put is e method to put a value into the set
+func (eh *Hashset) Put(v interface{}) error {
+	p, err := eh.getPage(v)
+	if err != nil {
+		return err
+	}
+
+	if p.isFull() && p.depth == eh.depth {
+		eh.pages = append(eh.pages, eh.pages...)
+		eh.depth++
+	}
+	return nil
 }

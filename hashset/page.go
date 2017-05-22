@@ -3,7 +3,7 @@ package hashset
 const maxPageSize int = 200
 
 type page struct {
-	depth int
+	depth uint32
 	items map[int]interface{}
 }
 
