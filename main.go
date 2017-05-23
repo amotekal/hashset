@@ -5,24 +5,20 @@ import (
 	"hashset/hashset"
 )
 
-// type as struct {
-// 	i int
-// }
-
-// type bs struct {
-// 	i int
-// }
+type as struct {
+	I int
+}
 
 func main() {
-	p := hashset.Hashset{}
+	p := hashset.NewHashset()
 
-	// var m = make(map[int]interface{})
-	// a := as{1}
-	// b := bs{2}
+	for i := 0; i < 10; i++ {
+		err := p.Put(as{i})
+		if err != nil {
+			fmt.Println(err)
+		}
+	}
 
-	// m[1] = a
-	// m[2] = b
-	// fmt.Print(m)
+	p.PrintAll()
 
-	fmt.Print(p)
 }
